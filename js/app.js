@@ -2,7 +2,7 @@
 
 const CONFIG = {
   // Ссылка на бота, например "https://t.me/your_bot". Пусто — кнопки Telegram скрыты.
-  telegramUrl: "",
+  telegramUrl: "https://t.me/InkPath_bot",
 };
 
 /* ============================== Данные ============================== */
