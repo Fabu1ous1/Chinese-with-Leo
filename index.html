@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Chinese with Leo — китайский с нуля до HSK4</title>
+<meta name="description" content="Бесплатный тренажёр китайского: 1200 слов HSK1–HSK4 с примерами и озвучкой, тесты, 50 тем грамматики и словарь. Прогресс сохраняется в браузере." />
+<meta property="og:title" content="Chinese with Leo — китайский с нуля до HSK4" />
+<meta property="og:description" content="Карточки, тесты, грамматика и словарь: 1200 слов HSK1–4 с озвучкой." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#1B1B20" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Spectral:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<script>
+  // Тема до отрисовки, чтобы не мигало
+  try {
+    var t = localStorage.getItem("cwl_theme");
+    if (t) document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="#/">
+      <span class="brand-seal">汉</span>
+      <span class="brand-name">Chinese with Leo</span>
+    </a>
+    <nav class="topnav" aria-label="Разделы">
+      <a href="#/" data-route="home">Главная</a>
+      <a href="#/learn" data-route="learn">Карточки</a>
+      <a href="#/quiz" data-route="quiz">Тест</a>
+      <a href="#/grammar" data-route="grammar">Грамматика</a>
+      <a href="#/dict" data-route="dict">Словарь</a>
+    </nav>
+    <div class="topbar-actions">
+      <div class="mini-seal" title="Выучено слов"><b id="sealCount">0</b><span id="sealTotal">/ 0</span></div>
+      <a class="btn btn-primary btn-sm tg-link" href="#" target="_blank" rel="noopener" hidden>Бот в Telegram</a>
+      <button class="icon-btn" id="themeBtn" aria-label="Сменить тему">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ======================= Главная ======================= -->
+  <section class="page" id="page-home" data-page="home" hidden>
+    <div class="hero">
+      <div>
+        <p class="eyebrow">汉语 · с нуля до HSK4</p>
+        <h1>Китайский, который <em>остаётся</em> в голове</h1>
+        <p class="lead">Карточки с озвучкой и примерами, быстрые тесты и понятная грамматика. Всё то же, что в Telegram-боте, — теперь на большом экране.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#/learn" id="heroStart">Начать учить →</a>
+          <a class="btn btn-ghost" href="#/quiz">Проверить себя</a>
+        </div>
+        <div class="hero-stats">
+          <div><b id="statWords">1198</b><span>слова с примерами</span></div>
+          <div><b>4</b><span>уровня HSK</span></div>
+          <div><b id="statGrammar">50</b><span>тем грамматики</span></div>
+        </div>
+      </div>
+      <div class="hero-card" id="wordOfDay">
+        <span class="stamp">今日</span>
+        <span class="big-char" id="wodHanzi"></span>
+        <div class="hc-pinyin" id="wodPinyin"></div>
+        <div class="hc-ru" id="wodRu"></div>
+        <div class="hc-ex"><span class="hanzi" id="wodEx"></span><span id="wodExRu"></span></div>
+        <div class="hc-actions">
+          <button class="btn btn-ghost btn-sm" id="wodSound">🔊 Послушать</button>
+          <button class="btn btn-ghost btn-sm" id="wodNext">Другое слово</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Твой прогресс</h2>
+      <div class="progress-grid">
+        <div class="panel ring-panel">
+          <div class="ring">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+              <circle class="ring-track" cx="75" cy="75" r="64" fill="none" stroke-width="12"/>
+              <circle class="ring-fg" id="ringFg" cx="75" cy="75" r="64" fill="none" stroke-width="12"
+                stroke-linecap="round" stroke-dasharray="402.1" stroke-dashoffset="402.1" transform="rotate(-90 75 75)"/>
+            </svg>
+            <div class="ring-center"><b id="ringCount">0</b><span id="ringTotal">/ 0</span></div>
+          </div>
+          <p class="ring-label">слов выучено всего</p>
+        </div>
+        <div class="levels" id="homeLevels">
+          <button class="continue" id="continueBtn">
+            <div><b>Продолжить обучение</b><span id="continueSub"></span></div>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Что внутри</h2>
+      <div class="features">
+        <a class="feature" href="#/learn"><div class="f-icon">字</div><h3>Карточки</h3><p>Иероглиф → пиньинь, перевод и живой пример. Тон нарисован прямо на карточке.</p></a>
+        <a class="feature" href="#/quiz"><div class="f-icon">✓</div><h3>Тесты</h3><p>Угадай значение или иероглиф. Верный ответ засчитывает слово как выученное.</p></a>
+        <a class="feature" href="#/grammar"><div class="f-icon">文</div><h3>Грамматика</h3><p>50 конструкций от 是 до 之所以…是因为 — формула, примеры и мини-задание.</p></a>
+        <a class="feature" href="#/dict"><div class="f-icon">典</div><h3>Словарь</h3><p>Мгновенный поиск по иероглифам, пиньиню (можно без тонов) и переводу.</p></a>
+      </div>
+    </div>
+
+    <div class="section tg-section" hidden>
+      <div class="tg-banner">
+        <div>
+          <h3>Учи и в дороге</h3>
+          <p>Тот же курс живёт в Telegram — открывай прямо в мессенджере.</p>
+        </div>
+        <a class="btn btn-primary tg-link" href="#" target="_blank" rel="noopener">Открыть бота →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= Карточки ======================= -->
+  <section class="page" id="page-learn" data-page="learn" hidden>
+    <div class="study">
+      <aside class="sidebar">
+        <div class="level-tabs" data-level-tabs></div>
+        <select class="lesson-select" data-lesson-select aria-label="Урок"></select>
+        <div class="lesson-list" data-lesson-list></div>
+      </aside>
+      <div class="stage">
+        <div class="stage-head">
+          <div>
+            <p class="eyebrow" id="learnEyebrow"></p>
+            <h2 id="learnTitle"></h2>
+          </div>
+          <span class="sub" id="learnLessonStat"></span>
+        </div>
+        <div class="lesson-bar"><i id="learnLessonBar"></i></div>
+
+        <div class="flip-card" id="flipCard" role="button" tabindex="0" aria-label="Перевернуть карточку">
+          <div class="flip-inner" id="flipInner">
+            <div class="flip-face flip-front">
+              <span class="learned-flag" id="learnedFlag" hidden>выучено</span>
+              <span class="char" id="fChar"></span>
+              <div class="tone-row"><svg id="toneSvg" width="22" height="22" viewBox="0 0 22 22" fill="none"></svg><span id="toneLabel"></span></div>
+              <p class="hint">нажми или <kbd>Пробел</kbd>, чтобы перевернуть</p>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="pinyin" id="fPinyin"></span>
+              <span class="ru" id="fRu"></span>
+              <div class="example">
+                <span class="ex-hanzi hanzi" id="fExHanzi"></span>
+                <span class="ex-pinyin" id="fExPinyin"></span>
+                <span class="ex-ru" id="fExRu"></span>
+              </div>
+            </div>
+          </div>
+          <button class="sound-btn" id="soundBtn" aria-label="Произнести">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <div class="card-controls">
+          <button class="nav-btn nav-prev" id="prevBtn" aria-label="Предыдущее слово">←</button>
+          <button class="status-btn" id="learningBtn">Ещё учу</button>
+          <button class="status-btn" id="learnedBtn">Выучено</button>
+          <button class="nav-btn nav-next" id="nextBtn" aria-label="Следующее слово">→</button>
+        </div>
+        <p class="counter" id="counter"></p>
+        <p class="shortcuts"><kbd>←</kbd><kbd>→</kbd> листать · <kbd>Пробел</kbd> перевернуть · <kbd>S</kbd> озвучить · <kbd>1</kbd> ещё учу · <kbd>2</kbd> выучено</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= Тест ======================= -->
+  <section class="page" id="page-quiz" data-page="quiz" hidden>
+    <div class="study">
+      <aside class="sidebar">
+        <div class="level-tabs" data-level-tabs></div>
+        <select class="lesson-select" data-lesson-select aria-label="Урок"></select>
+        <div class="lesson-list" data-lesson-list></div>
+      </aside>
+      <div class="stage">
+        <div class="stage-head">
+          <div>
+            <p class="eyebrow" id="quizEyebrow"></p>
+            <h2 id="quizTitle"></h2>
+          </div>
+        </div>
+        <div class="quiz-top">
+          <div class="seg" id="quizMode">
+            <button data-mode="hz2ru" class="active">汉 → RU</button>
+            <button data-mode="ru2hz">RU → 汉</button>
+          </div>
+          <div class="seg" id="quizScope">
+            <button data-scope="lesson" class="active">Урок</button>
+            <button data-scope="level">Весь уровень</button>
+          </div>
+          <div class="score"><span>Верно: <b id="scoreOk">0</b>/<b id="scoreAll">0</b></span><span class="streak">Серия: <b id="scoreStreak">0</b></span></div>
+        </div>
+
+        <div class="quiz-card">
+          <button class="sound-btn" id="quizSound" aria-label="Произнести">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+          <span id="qPrompt"></span>
+          <span class="q-pinyin" id="qPinyin"></span>
+        </div>
+        <p class="quiz-label" id="quizLabel">Что это значит?</p>
+        <div class="options" id="qOptions"></div>
+        <button class="btn btn-gold quiz-next" id="qNext" hidden>Следующий вопрос → <span style="opacity:.6;font-weight:500">Enter</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= Грамматика ======================= -->
+  <section class="page" id="page-grammar" data-page="grammar" hidden>
+    <div id="gListView">
+      <div class="page-head">
+        <p class="eyebrow">语法</p>
+        <h1 class="page-title">Грамматика</h1>
+        <p class="page-sub">Ключевые конструкции по уровням: объяснение, формула, примеры с озвучкой и проверочный вопрос.</p>
+      </div>
+      <div class="pill-row" id="gLevels" style="margin-bottom:18px"></div>
+      <div class="g-grid" id="gList"></div>
+    </div>
+    <div id="gDetailView" class="g-detail" hidden>
+      <button class="g-back" id="gBack">← Все темы</button>
+      <p class="eyebrow" id="gLevelLabel"></p>
+      <h2 id="gTitle"></h2>
+      <p class="g-explain" id="gExplain"></p>
+      <div class="g-formula" id="gFormula"></div>
+      <p class="g-ex-label">Примеры</p>
+      <div id="gExamples"></div>
+      <div class="g-practice">
+        <p class="q" id="gPracticeQ"></p>
+        <div class="options" id="gPracticeOpts"></div>
+      </div>
+      <div class="g-pager">
+        <a class="btn btn-ghost btn-sm" id="gPrev" href="#">← Назад</a>
+        <a class="btn btn-ghost btn-sm" id="gNext" href="#">Дальше →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= Словарь ======================= -->
+  <section class="page" id="page-dict" data-page="dict" hidden>
+    <div class="page-head">
+      <p class="eyebrow">词典</p>
+      <h1 class="page-title">Словарь</h1>
+      <p class="page-sub">Ищи по иероглифам, пиньиню (тоны и пробелы можно не ставить) или по-русски.</p>
+    </div>
+    <div class="dict-controls">
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="sr-only">Поиск</span>
+        <input id="dictSearch" type="search" placeholder="например: 学习, xuexi или «учиться»" autocomplete="off" />
+      </label>
+      <div class="pill-row" id="dictLevels"></div>
+    </div>
+    <div class="pill-row" id="dictFilter" style="margin-bottom:14px">
+      <button class="pill active" data-f="all">Все</button>
+      <button class="pill" data-f="todo">Не выучены</button>
+      <button class="pill" data-f="done">Выучены</button>
+    </div>
+    <p class="dict-meta" id="dictMeta"></p>
+    <div class="dict-table" id="dictTable"></div>
+    <button class="btn btn-ghost dict-more" id="dictMore" hidden>Показать ещё</button>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <span>© Chinese with Leo · 汉语 с нуля</span>
+    <span>Прогресс хранится в этом браузере · <button class="link-btn" id="exportBtn">Сохранить</button> · <button class="link-btn" id="importBtn">Загрузить</button> · <button class="link-btn" id="resetBtn">Сбросить</button></span>
+    <input type="file" id="importFile" accept="application/json,.json" hidden />
+  </div>
+</footer>
+
+<nav class="bottom-tabs" aria-label="Разделы">
+  <a href="#/" data-route="home">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 11.5L12 4l9 7.5M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Главная</span>
+  </a>
+  <a href="#/learn" data-route="learn">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="13" height="16" rx="2" transform="rotate(-6 4 5)" stroke="currentColor" stroke-width="1.8"/><rect x="7" y="3" width="13" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>
+    <span>Учить</span>
+  </a>
+  <a href="#/quiz" data-route="quiz">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Тест</span>
+  </a>
+  <a href="#/grammar" data-route="grammar">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5a1.5 1.5 0 0 0 1.5-1.5v-13z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    <span>Грамматика</span>
+  </a>
+  <a href="#/dict" data-route="dict">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>Словарь</span>
+  </a>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
